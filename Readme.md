@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Арсен Хуранов](https://up.htmlacademy.ru/javascript/25/user/1775055).
-* Наставник: `Дмитрий Мирошниченко`(https://htmlacademy.ru/profile/id591417).
+* Наставник: [Дмитрий Мирошниченко](https://htmlacademy.ru/profile/id591417).
 
 ---
 
