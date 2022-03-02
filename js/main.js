@@ -4,8 +4,8 @@ const randomNumber = (firstNumber, secondNumber) => {
   return Math.floor(minNumber + Math.random() * (maxNumber - minNumber + 1));
 };
 
-const randomNumberZap = (firstNumber, secondNumber, count) => {
+const randomNumberFloat = (firstNumber, secondNumber, count) => {
   let maxNumber = Math.max(firstNumber,secondNumber);
   let minNumber = Math.min(firstNumber, secondNumber);
-  return Math.floor((minNumber + Math.random() * (maxNumber - minNumber + 1))*Math.pow(10, count)) / Math.pow(10, count);
+  return Math.floor((minNumber + Math.random() * (maxNumber - minNumber))*Math.pow(10, count)) / Math.pow(10, count);
 };
