@@ -1,25 +1,3 @@
-const randomNumber = (firstNumber, secondNumber) => {
-  let maxNumber = Math.max(firstNumber,secondNumber);
-  let minNumber = Math.min(firstNumber, secondNumber);
-  return Math.floor(minNumber + Math.random() * (maxNumber - minNumber + 1));
-};
-
-const randomNumberFloat = (firstNumber, secondNumber, count) => {
-  let maxNumber = Math.max(firstNumber,secondNumber);
-  let minNumber = Math.min(firstNumber, secondNumber);
-  return Math.floor((minNumber + Math.random() * (maxNumber - minNumber))*Math.pow(10, count)) / Math.pow(10, count);
-};
-
-const number = () => {
-  let randomN = randomNumber(1,10);
-  if(randomN<10){
-    return '0' + randomN;
-  }
-  else {
-    return randomN.toString();
-  }
-};
-
 const typeArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
 const checkArray = ['12:00', '13:00', '14:00'];
@@ -34,9 +12,26 @@ const photosArray = [
 
 const SIMILAR_ADS_COUNT = 10;
 
-const createAd = () =>{
+const randomNumber = (firstNumber, secondNumber) => {
+  let maxNumber = Math.max(firstNumber,secondNumber);
+  let minNumber = Math.min(firstNumber, secondNumber);
+  return Math.floor(minNumber + Math.random() * (maxNumber - minNumber + 1));
+};
+
+const randomNumberFloat = (firstNumber, secondNumber, count) => {
+  let maxNumber = Math.max(firstNumber,secondNumber);
+  let minNumber = Math.min(firstNumber, secondNumber);
+  return Math.floor((minNumber + Math.random() * (maxNumber - minNumber))*Math.pow(10, count)) / Math.pow(10, count);
+};
+
+const getRandomNumber = () => {
+  let randomN = randomNumber(1,10);
+  return `0${randomN}`.slice(-2);
+};
+
+const createAd = () => {
   const author = {
-    avatar: 'img/avatars/user'+ number() +'.png'
+    avatar: `img/avatars/user${getRandomNumber()}.png`
   };
 
   const location = {
@@ -46,7 +41,7 @@ const createAd = () =>{
 
   const offer = {
     title: 'Ищем кекса',
-    address: location.lat+', '+location.lng,
+    address: `${location.lat}, ${location.lng}`,
     price: randomNumber(1,3000),
     type: typeArray[randomNumber(0,4)],
     rooms: randomNumber(1,10),
@@ -66,4 +61,3 @@ const createAd = () =>{
 };
 
 const similarAds = Array.from({length: SIMILAR_ADS_COUNT}, createAd);
-console.log(similarAds);
