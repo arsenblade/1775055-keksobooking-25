@@ -40,5 +40,5 @@ export const createAd = () => {
     author,
     offer,
     location
-  }
+  };
 };
