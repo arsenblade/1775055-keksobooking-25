@@ -1,6 +1,8 @@
-import {randomNumber, randomNumberFloat, getRandomNumber} from './util.js';
+import { getRandomNumber, getRandomNumberFloat, getFormatNumber } from './util.js';
 
-const typeArray = [{'palace': 'Дворец'}, {'flat': 'Квартира'}, {'house': 'Дом'}, {'bungalow': 'Бунгало'}, {'hotel': 'Отель'}];
+const SIMILAR_ADS_COUNT = 10;
+
+const typeArray = [{ 'palace': 'Дворец' }, { 'flat': 'Квартира' }, { 'house': 'Дом' }, { 'bungalow': 'Бунгало' }, { 'hotel': 'Отель' }];
 
 const checkArray = ['12:00', '13:00', '14:00'];
 
@@ -13,8 +15,8 @@ const photosArray = [
 const featuresGenerate = (counter) => {
   const featuresArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   const featuresResult = [];
-  for(let i = 0; i < counter; i++){
-    const numberElement = randomNumber(0,featuresArray.length);
+  for (let i = 0; i < counter; i++) {
+    const numberElement = getRandomNumber(0, featuresArray.length);
     featuresResult.push(featuresArray[numberElement]);
     featuresArray.splice(numberElement, 1);
   }
@@ -23,26 +25,26 @@ const featuresGenerate = (counter) => {
 
 const createAd = () => {
   const author = {
-    avatar: `img/avatars/user${getRandomNumber()}.png`
+    avatar: `img/avatars/user${getFormatNumber()}.png`
   };
 
   const location = {
-    lat: randomNumberFloat(35.65000, 35.70000, 5),
-    lng: randomNumberFloat(139.70000, 139.80000, 5)
+    lat: getRandomNumberFloat(35.65000, 35.70000, 5),
+    lng: getRandomNumberFloat(139.70000, 139.80000, 5)
   };
 
   const offer = {
     title: 'Ищем кекса',
     address: `${location.lat}, ${location.lng}`,
-    price: randomNumber(1,3000),
-    type: typeArray[randomNumber(0,4)],
-    rooms: randomNumber(1,5),
-    guests: randomNumber(1,10),
-    checkin: checkArray[randomNumber(0,2)],
-    checkout: checkArray[randomNumber(0,2)],
-    features: featuresGenerate(randomNumber(1,4)),
+    price: getRandomNumber(1, 3000),
+    type: typeArray[getRandomNumber(0, 4)],
+    rooms: getRandomNumber(1, 5),
+    guests: getRandomNumber(1, 10),
+    checkin: checkArray[getRandomNumber(0, 2)],
+    checkout: checkArray[getRandomNumber(0, 2)],
+    features: featuresGenerate(getRandomNumber(1, 4)),
     description: 'Красивое место',
-    photos: photosArray[randomNumber(0,2)]
+    photos: photosArray[getRandomNumber(0, 2)]
   };
 
   return {
@@ -52,6 +54,5 @@ const createAd = () => {
   };
 };
 
-const SIMILAR_ADS_COUNT = 10;
-const similarAds = Array.from({length: SIMILAR_ADS_COUNT}, createAd);
-export{similarAds};
+const similarAds = Array.from({ length: SIMILAR_ADS_COUNT }, createAd);
+export { similarAds };
