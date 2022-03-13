@@ -1,4 +1,6 @@
-import {randomNumber, randomNumberFloat, getRandomNumber} from './util.js';
+import { getRandomNumber, getRandomNumberFloat, getFormatNumber } from './util.js';
+
+const SIMILAR_ADS_COUNT = 10;
 
 const typeArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
@@ -12,28 +14,28 @@ const photosArray = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-export const createAd = () => {
+const createAd = () => {
   const author = {
-    avatar: `img/avatars/user${getRandomNumber()}.png`
+    avatar: `img/avatars/user${getFormatNumber()}.png`
   };
 
   const location = {
-    lat: randomNumberFloat(35.65000, 35.70000, 5),
-    lng: randomNumberFloat(139.70000, 139.80000, 5)
+    lat: getRandomNumberFloat(35.65000, 35.70000, 5),
+    lng: getRandomNumberFloat(139.70000, 139.80000, 5)
   };
 
   const offer = {
     title: 'Ищем кекса',
     address: `${location.lat}, ${location.lng}`,
-    price: randomNumber(1,3000),
-    type: typeArray[randomNumber(0,4)],
-    rooms: randomNumber(1,10),
-    guests: randomNumber(1,30),
-    checkin: checkArray[randomNumber(0,2)],
-    checkout: checkArray[randomNumber(0,2)],
-    features: featuresArray[randomNumber(0,4)],
+    price: getRandomNumber(1, 3000),
+    type: typeArray[getRandomNumber(0, 4)],
+    rooms: getRandomNumber(1, 10),
+    guests: getRandomNumber(1, 30),
+    checkin: checkArray[getRandomNumber(0, 2)],
+    checkout: checkArray[getRandomNumber(0, 2)],
+    features: featuresArray[getRandomNumber(0, 4)],
     description: 'Красивое место',
-    photos: photosArray[randomNumber(0,2)]
+    photos: photosArray[getRandomNumber(0, 2)]
   };
 
   return {
@@ -42,3 +44,6 @@ export const createAd = () => {
     location
   };
 };
+
+const similarAds = Array.from({ length: SIMILAR_ADS_COUNT }, createAd);
+export { similarAds };
