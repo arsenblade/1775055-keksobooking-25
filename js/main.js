@@ -25,7 +25,7 @@ const getRandomNumberFloat = (firstNumber, secondNumber, count) => {
 };
 
 const getFormatNumber = () => {
-  const randomN = randomNumber(1, 10);
+  const randomN = getRandomNumber(1, 10);
   return `0${randomN}`.slice(-2);
 };
 
