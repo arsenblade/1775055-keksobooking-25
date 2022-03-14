@@ -10,7 +10,7 @@ const generateFeatures = (featuresList, offerFeatures) => {
   });
 };
 
-export const generateCard = (dataCard, cardTemplateOriginal) => {
+const generateCard = (dataCard, cardTemplateOriginal) => {
   const cardTemplateInner = cardTemplateOriginal.cloneNode(true);
   const { offer, author } = dataCard;
 
@@ -47,3 +47,6 @@ export const generateCard = (dataCard, cardTemplateOriginal) => {
 
   return cardTemplateInner;
 };
+
+export { generateCard };
+
