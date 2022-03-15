@@ -2,17 +2,26 @@ import { getRandomNumber, getRandomNumberFloat, getFormatNumber } from './util.j
 
 const SIMILAR_ADS_COUNT = 10;
 
-const typeArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const typeArray = [{ 'palace': 'Дворец' }, { 'flat': 'Квартира' }, { 'house': 'Дом' }, { 'bungalow': 'Бунгало' }, { 'hotel': 'Отель' }];
 
 const checkArray = ['12:00', '13:00', '14:00'];
-
-const featuresArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 const photosArray = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
+
+const featuresGenerate = (counter) => {
+  const featuresArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  const featuresResult = [];
+  for (let i = 0; i < counter; i++) {
+    const numberElement = getRandomNumber(0, featuresArray.length);
+    featuresResult.push(featuresArray[numberElement]);
+    featuresArray.splice(numberElement, 1);
+  }
+  return featuresResult;
+};
 
 const createAd = () => {
   const author = {
@@ -29,11 +38,11 @@ const createAd = () => {
     address: `${location.lat}, ${location.lng}`,
     price: getRandomNumber(1, 3000),
     type: typeArray[getRandomNumber(0, 4)],
-    rooms: getRandomNumber(1, 10),
-    guests: getRandomNumber(1, 30),
+    rooms: getRandomNumber(1, 5),
+    guests: getRandomNumber(1, 10),
     checkin: checkArray[getRandomNumber(0, 2)],
     checkout: checkArray[getRandomNumber(0, 2)],
-    features: featuresArray[getRandomNumber(0, 4)],
+    features: featuresGenerate(getRandomNumber(1, 4)),
     description: 'Красивое место',
     photos: photosArray[getRandomNumber(0, 2)]
   };
