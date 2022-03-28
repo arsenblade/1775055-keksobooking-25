@@ -3,3 +3,5 @@ import {activatorFormAndFilters, inactiveFormAndFilters} from './work-with-form.
 const cardsAr = createCards();
 const mapCanvas = document.querySelector('#map-canvas');
 mapCanvas.append(cardsAr[0]);
+inactiveFormAndFilters();
+activatorFormAndFilters();

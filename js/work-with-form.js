@@ -1,5 +1,6 @@
 const form = document.querySelector('.ad-form');
 const filters = document.querySelector('.map__filters');
+
 const minPriceHousing = {
     'bungalow': 0,
     'flat': 1000,
@@ -24,10 +25,25 @@ const numberOfRoomsAndGuests = {
     '100': ['0']
 };
 
-
 const typeOfHousing = form.querySelector('#type');
+
 const price = form.querySelector('#price');
+
+const roomNumber = form.querySelector('#room_number');
+
+const capacity = form.querySelector('#capacity');
+
 price.placeholder =  minPriceHousing[typeOfHousing.value];
+
+const activatorFormAndFilters = () => {
+    form.classList.remove('ad-form--disabled');
+    filters.classList.remove('map__filters--disabled');
+};
+
+const inactiveFormAndFilters = () => {
+    form.classList.add('ad-form--disabled');
+    filters.classList.add('map__filters--disabled');
+};
 
 const validatePrice = (value) => {
     return value > minPriceHousing[typeOfHousing.value];
@@ -38,17 +54,9 @@ const onPriceChange = () => {
     pristine.validate(price);
 };
 
-pristine.addValidator(
-    price,
-    validatePrice,
-    `минимальная цена ${minPriceHousing[typeOfHousing.value]}`
-);
-
-typeOfHousing.addEventListener('change', onPriceChange);
-
-const roomNumber = form.querySelector('#room_number');
-
-const capacity = form.querySelector('#capacity');
+const priceValidatorError = () => {
+    return `минимальная цена ${minPriceHousing[typeOfHousing.value]}`;
+};
 
 const validateRoomsAndGuests = () => {
     return numberOfRoomsAndGuests[roomNumber.value].includes(capacity.value);
@@ -67,22 +75,21 @@ const getRoomsAndGuestsErrorMessage = () => {
 
     return ' 100 комнат — «не для гостей»';
 };
-pristine.addValidator(capacity, validateRoomsAndGuests, getRoomsAndGuestsErrorMessage);
+
+typeOfHousing.addEventListener('change', onPriceChange);
 
 form.addEventListener('submit', (evt) => {
     evt.preventDefault();
   
     pristine.validate();
-  });
+});
 
-const activatorFormAndFilters = () => {
-    form.classList.remove('ad-form--disabled');
-    filters.classList.remove('map__filters--disabled');
-};
+pristine.addValidator(
+    price,
+    validatePrice,
+    priceValidatorError
+);
 
-const inactiveFormAndFilters = () => {
-    form.classList.add('ad-form--disabled');
-    filters.classList.add('map__filters--disabled');
-};
+pristine.addValidator(capacity, validateRoomsAndGuests, getRoomsAndGuestsErrorMessage);
 
 export { activatorFormAndFilters, inactiveFormAndFilters};
