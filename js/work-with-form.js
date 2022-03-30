@@ -33,6 +33,10 @@ const roomNumber = form.querySelector('#room_number');
 
 const capacity = form.querySelector('#capacity');
 
+const timein = form.querySelector('#timein');
+
+const timeout = form.querySelector('#timeout');
+
 price.placeholder = minPriceHousing[typeOfHousing.value];
 
 const activatorFormAndFilters = () => {
@@ -72,6 +76,14 @@ const getRoomsAndGuestsErrorMessage = () => {
 };
 
 typeOfHousing.addEventListener('change', onPriceChange);
+
+timein.addEventListener('change', () => {
+  timeout.value = timein.value;
+});
+
+timeout.addEventListener('change', () => {
+  timein.value = timeout.value;
+});
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
