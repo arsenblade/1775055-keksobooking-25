@@ -16,7 +16,7 @@ const pristine = new Pristine(form, {
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
   errorTextClass: 'span__error'
-});
+}, false);
 
 const numberOfRoomsAndGuests = {
   '1': ['1'],
@@ -32,6 +32,10 @@ const price = form.querySelector('#price');
 const roomNumber = form.querySelector('#room_number');
 
 const capacity = form.querySelector('#capacity');
+
+const timein = form.querySelector('#timein');
+
+const timeout = form.querySelector('#timeout');
 
 price.placeholder = minPriceHousing[typeOfHousing.value];
 
@@ -49,6 +53,7 @@ const validatePrice = (value) => value > minPriceHousing[typeOfHousing.value];
 
 const onPriceChange = () => {
   price.placeholder = minPriceHousing[typeOfHousing.value];
+  price.min = minPriceHousing[typeOfHousing.value];
   pristine.validate(price);
 };
 
@@ -73,6 +78,14 @@ const getRoomsAndGuestsErrorMessage = () => {
 
 typeOfHousing.addEventListener('change', onPriceChange);
 
+timein.addEventListener('change', () => {
+  timeout.value = timein.value;
+});
+
+timeout.addEventListener('change', () => {
+  timein.value = timeout.value;
+});
+
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
@@ -85,5 +98,4 @@ pristine.addValidator(
 );
 
 pristine.addValidator(capacity, validateRoomsAndGuests, getRoomsAndGuestsErrorMessage);
-
 export { activatorFormAndFilters, inactiveFormAndFilters };
