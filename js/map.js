@@ -3,12 +3,15 @@ import { generateCard } from './generate-one-card.js';
 
 const address = document.querySelector('#address');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
+const sliderElement = document.querySelector('.ad-form__slider');
+const price = document.querySelector('#price');
+const type = document.querySelector('#type');
 
 const createMap = () => {
   const map = L.map('map-canvas')
     .setView({
-      lat: 35.6895,
-      lng: 139.69171,
+      lat: similarAds[0].location.lat,
+      lng: similarAds[0].location.lng,
     }, 15);
 
   L.tileLayer(
@@ -18,7 +21,7 @@ const createMap = () => {
     },
   ).addTo(map);
 
-  address.value = '35.6895, 139.69171';
+  address.value = `${similarAds[0].location.lat}, ${similarAds[0].location.lng}`;
 
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
@@ -28,8 +31,8 @@ const createMap = () => {
 
   const mainPinMarker = L.marker(
     {
-      lat: 35.6895,
-      lng: 139.69171,
+      lat: similarAds[0].location.lat,
+      lng: similarAds[0].location.lng,
     },
     {
       draggable: true,
@@ -39,7 +42,7 @@ const createMap = () => {
 
   mainPinMarker.addTo(map);
 
-  mainPinMarker.on('moveend', (evt) => {
+  mainPinMarker.on('move', (evt) => {
     address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
   });
 
@@ -77,4 +80,38 @@ const createMap = () => {
 
 };
 
-export{createMap};
+const createSlider = () => {
+  noUiSlider.create(sliderElement, {
+    range: {
+      min: Number(price.placeholder),
+      max: 100000,
+    },
+    start: Number(price.placeholder),
+    step: 200,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        return value.toFixed(0);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+
+  sliderElement.noUiSlider.on('update', () => {
+    price.value = sliderElement.noUiSlider.get();
+  });
+
+  type.addEventListener('change',(evt)=> {
+    sliderElement.noUiSlider.updateOptions({
+      range: {
+        min: Number(price.placeholder),
+        max: 100000
+      },
+      start: Number(price.placeholder),
+    });
+  });
+};
+
+export{createMap, createSlider};
