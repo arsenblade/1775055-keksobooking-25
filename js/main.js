@@ -1,5 +1,5 @@
-import {activatorFormAndFilters, inactiveFormAndFilters} from './work-with-form.js';
-import {createMap, createSlider} from './map.js';
+import {activatorFormAndFilters, inactiveFormAndFilters , createSlider } from './work-with-form.js';
+import {createMap} from './map.js';
 inactiveFormAndFilters();
 createMap();
 activatorFormAndFilters();

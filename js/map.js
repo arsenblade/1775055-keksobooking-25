@@ -3,15 +3,17 @@ import { generateCard } from './generate-one-card.js';
 
 const address = document.querySelector('#address');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const sliderElement = document.querySelector('.ad-form__slider');
-const price = document.querySelector('#price');
-const type = document.querySelector('#type');
+
+const StartCoordinates = {
+  LAT: 35.68951,
+  LNG: 139.69211
+};
 
 const createMap = () => {
   const map = L.map('map-canvas')
     .setView({
-      lat: similarAds[0].location.lat,
-      lng: similarAds[0].location.lng,
+      lat: StartCoordinates.LAT,
+      lng: StartCoordinates.LNG,
     }, 15);
 
   L.tileLayer(
@@ -21,7 +23,7 @@ const createMap = () => {
     },
   ).addTo(map);
 
-  address.value = `${similarAds[0].location.lat}, ${similarAds[0].location.lng}`;
+  address.value = `${StartCoordinates.LAT}, ${StartCoordinates.LNG}`;
 
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
@@ -31,8 +33,8 @@ const createMap = () => {
 
   const mainPinMarker = L.marker(
     {
-      lat: similarAds[0].location.lat,
-      lng: similarAds[0].location.lng,
+      lat: StartCoordinates.LAT,
+      lng: StartCoordinates.LNG
     },
     {
       draggable: true,
@@ -80,38 +82,4 @@ const createMap = () => {
 
 };
 
-const createSlider = () => {
-  noUiSlider.create(sliderElement, {
-    range: {
-      min: Number(price.placeholder),
-      max: 100000,
-    },
-    start: Number(price.placeholder),
-    step: 200,
-    connect: 'lower',
-    format: {
-      to: function (value) {
-        return value.toFixed(0);
-      },
-      from: function (value) {
-        return parseFloat(value);
-      },
-    },
-  });
-
-  sliderElement.noUiSlider.on('update', () => {
-    price.value = sliderElement.noUiSlider.get();
-  });
-
-  type.addEventListener('change',()=> {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: Number(price.placeholder),
-        max: 100000
-      },
-      start: Number(price.placeholder),
-    });
-  });
-};
-
-export{createMap, createSlider};
+export{createMap};
