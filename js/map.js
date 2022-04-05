@@ -7,7 +7,7 @@ const sliderElement = document.querySelector('.ad-form__slider');
 const price = document.querySelector('#price');
 const type = document.querySelector('#type');
 
-const createMap = () => {
+const createMap = (data) => {
   const map = L.map('map-canvas')
     .setView({
       lat: similarAds[0].location.lat,
@@ -74,8 +74,8 @@ const createMap = () => {
       .bindPopup(generateCard(similarAd, cardTemplate));
   };
 
-  similarAds.forEach((similarAd) => {
-    addingRegularAd(similarAd);
+  data.forEach((data1) => {
+    addingRegularAd(data1);
   });
 
 };
@@ -103,7 +103,7 @@ const createSlider = () => {
     price.value = sliderElement.noUiSlider.get();
   });
 
-  type.addEventListener('change',(evt)=> {
+  type.addEventListener('change', (evt) => {
     sliderElement.noUiSlider.updateOptions({
       range: {
         min: Number(price.placeholder),
@@ -114,4 +114,4 @@ const createSlider = () => {
   });
 };
 
-export{createMap, createSlider};
+export { createMap, createSlider };

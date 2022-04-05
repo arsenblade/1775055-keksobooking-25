@@ -34,7 +34,9 @@ const generateCard = (dataCard, cardTemplateOriginal) => {
 
   const featuresContainer = cardTemplateInner.querySelector('.popup__features');
   const featuresList = featuresContainer.querySelectorAll('.popup__feature');
-  generateFeatures(featuresList, offer.features);
+  if(offer.features !== undefined) {
+    generateFeatures(featuresList, offer.features);
+  }
 
   const description = cardTemplateInner.querySelector('.popup__description');
   description.innerText = offer.description;
