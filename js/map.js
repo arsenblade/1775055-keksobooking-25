@@ -103,7 +103,7 @@ const createSlider = () => {
     price.value = sliderElement.noUiSlider.get();
   });
 
-  type.addEventListener('change',(evt)=> {
+  type.addEventListener('change',()=> {
     sliderElement.noUiSlider.updateOptions({
       range: {
         min: Number(price.placeholder),
