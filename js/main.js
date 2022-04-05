@@ -1,11 +1,6 @@
-import {activatorFormAndFilters, inactiveFormAndFilters , createSlider } from './work-with-form.js';
-import {createMap} from './map.js';
-inactiveFormAndFilters();
-activatorFormAndFilters();
-createSlider();
-fetch('https://25.javascript.pages.academy/keksobooking/data')
-  .then((response) => response.json())
-  .then((wizards) => {
-    console.log(wizards);
-    createMap(wizards);
-  });
+import { createMap } from './map.js';
+import { showAlert} from './util.js';
+import { getData } from './api.js';
+import { inactivatorFilters, createSlider, setUserFormSubmit } from './work-with-form.js';
+getData(createMap, showAlert, inactivatorFilters, createSlider);
+setUserFormSubmit();

@@ -1,15 +1,16 @@
-import { similarAds } from './data.js';
 import { generateCard } from './generate-one-card.js';
 
 const address = document.querySelector('#address');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
+
+const resetFormButton = document.querySelector('.ad-form__reset');
 
 const StartCoordinates = {
   LAT: 35.68951,
   LNG: 139.69211
 };
 
-const createMap = (data) => {
+const createMap = (dataAds) => {
   const map = L.map('map-canvas')
     .setView({
       lat: StartCoordinates.LAT,
@@ -24,6 +25,7 @@ const createMap = (data) => {
   ).addTo(map);
 
   address.value = `${StartCoordinates.LAT}, ${StartCoordinates.LNG}`;
+  const Startlatlng = L.latLng(StartCoordinates.LAT, StartCoordinates.LNG);
 
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
@@ -76,10 +78,18 @@ const createMap = (data) => {
       .bindPopup(generateCard(similarAd, cardTemplate));
   };
 
-  data.forEach((data1) => {
-    addingRegularAd(data1);
-  });
+  if (dataAds !== undefined) {
+    dataAds.forEach((dataAd) => {
+      addingRegularAd(dataAd);
+    });
+  }
 
+  resetFormButton.addEventListener('click', () => {
+    mainPinMarker.setLatLng(Startlatlng);
+    markerGroup.eachLayer((layer) => {
+      layer.closePopup();
+    });
+  });
 };
 
-export{createMap};
+export { createMap };

@@ -10,6 +10,20 @@ const generateFeatures = (featuresList, offerFeatures) => {
   });
 };
 
+const generatePhotos = (dataPhotos, photoTemplate) => {
+  if(dataPhotos === undefined){
+    photoTemplate.remove();
+    return;
+  }
+
+  photoTemplate.src = dataPhotos[0];
+  for(let i = 1; i < dataPhotos.length; i++) {
+    const photoTemplateClone = photoTemplate.cloneNode(true);
+    photoTemplateClone.src = dataPhotos[i];
+    photoTemplate.parentElement.append(photoTemplateClone);
+  }
+};
+
 const generateCard = (dataCard, cardTemplateOriginal) => {
   const cardTemplateInner = cardTemplateOriginal.cloneNode(true);
   const { offer, author } = dataCard;
@@ -42,7 +56,7 @@ const generateCard = (dataCard, cardTemplateOriginal) => {
   description.innerText = offer.description;
 
   const photo = cardTemplateInner.querySelector('.popup__photo');
-  photo.src = offer.photos;
+  generatePhotos(offer.photos, photo);
 
   const avatar = cardTemplateInner.querySelector('.popup__avatar');
   avatar.src = author.avatar;
