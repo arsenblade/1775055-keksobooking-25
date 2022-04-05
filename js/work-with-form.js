@@ -37,6 +37,8 @@ const timein = form.querySelector('#timein');
 
 const timeout = form.querySelector('#timeout');
 
+const sliderElement = document.querySelector('.ad-form__slider');
+
 price.placeholder = minPriceHousing[typeOfHousing.value];
 
 const activatorFormAndFilters = () => {
@@ -98,4 +100,39 @@ pristine.addValidator(
 );
 
 pristine.addValidator(capacity, validateRoomsAndGuests, getRoomsAndGuestsErrorMessage);
-export { activatorFormAndFilters, inactiveFormAndFilters };
+
+const createSlider = () => {
+  noUiSlider.create(sliderElement, {
+    range: {
+      min: Number(price.placeholder),
+      max: 100000,
+    },
+    start: Number(price.placeholder),
+    step: 200,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        return value.toFixed(0);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+
+  sliderElement.noUiSlider.on('update', () => {
+    price.value = sliderElement.noUiSlider.get();
+  });
+
+  typeOfHousing.addEventListener('change',()=> {
+    sliderElement.noUiSlider.updateOptions({
+      range: {
+        min: Number(price.placeholder),
+        max: 100000
+      },
+      start: Number(price.placeholder),
+    });
+  });
+};
+
+export { activatorFormAndFilters, inactiveFormAndFilters, createSlider };
