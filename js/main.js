@@ -1,7 +1,6 @@
-import { createCards } from './generate-cards.js';
-import {activatorFormAndFilters, inactiveFormAndFilters} from './work-with-form.js';
-const cardsAr = createCards();
-const mapCanvas = document.querySelector('#map-canvas');
-mapCanvas.append(cardsAr[0]);
+import {activatorFormAndFilters, inactiveFormAndFilters , createSlider } from './work-with-form.js';
+import {createMap} from './map.js';
 inactiveFormAndFilters();
+createMap();
 activatorFormAndFilters();
+createSlider();
