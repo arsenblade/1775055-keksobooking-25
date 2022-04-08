@@ -11,16 +11,20 @@ const generateFeatures = (featuresList, offerFeatures) => {
 };
 
 const generatePhotos = (dataPhotos, photoTemplate) => {
-  if(dataPhotos === undefined){
+  if(!dataPhotos){
     photoTemplate.remove();
     return;
   }
-
-  photoTemplate.src = dataPhotos[0];
-  for(let i = 1; i < dataPhotos.length; i++) {
-    const photoTemplateClone = photoTemplate.cloneNode(true);
-    photoTemplateClone.src = dataPhotos[i];
-    photoTemplate.parentElement.append(photoTemplateClone);
+  const photoParent = photoTemplate.parentElement;
+  photoTemplate.remove();
+  for(let i = 0; i < dataPhotos.length; i++) {
+    const photo = document.createElement('img');
+    photo.classList.add('popup__photo');
+    photo.width = 45;
+    photo.height = 40;
+    photo.alt = 'Фотография жилья';
+    photo.src = dataPhotos[i];
+    photoParent.append(photo);
   }
 };
 

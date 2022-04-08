@@ -1,25 +1,31 @@
-const getData = (onSuccess, onFail, inactivatorFilters ,createSlider) => {
-  fetch('https://25.javascript.pages.academy/keksobooking/data')
+const ServerAddress = {
+  SHIP_ADDRESS: 'https://25.javascript.pages.academy/keksobooking',
+  RECEIVING_ADDRESS: 'https://25.javascript.pages.academy/keksobooking/data'
+};
+
+
+const getData = (createMap, createLabelOnMap, onFail, inactivatorFilters) => {
+  fetch(ServerAddress.RECEIVING_ADDRESS)
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error();
+      throw new Error('Не удалось загрузить данные');
     })
     .then((ads) => {
-      onSuccess(ads);
-      createSlider();
+      createMap();
+      createLabelOnMap(ads)
     })
-    .catch(() => {
+    .catch((err) => {
       onFail('Не удалось загрузить данные. Перезгрузите страницу!');
-      onSuccess();
+      createMap();
       inactivatorFilters();
     });
 };
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://25.javascript.pages.academy/keksobooking',
+    ServerAddress.SHIP_ADDRESS,
     {
       method: 'POST',
       body,
@@ -29,10 +35,10 @@ const sendData = (onSuccess, onFail, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        throw new Error();
+        throw new Error('Не удалось отправить форму');
       }
     })
-    .catch(() => {
+    .catch((err) => {
       onFail();
     });
 };

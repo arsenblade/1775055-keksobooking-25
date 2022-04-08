@@ -51,6 +51,7 @@ const errorfulFormSubm = document.querySelector('#error').content.querySelector(
 const htmlBody = document.querySelector('body');
 
 price.placeholder = minPriceHousing[typeOfHousing.value];
+price.min = minPriceHousing[typeOfHousing.value];
 
 const activatorFormAndFilters = () => {
   form.classList.remove('ad-form--disabled');
@@ -71,16 +72,10 @@ const validatePrice = (value) => value >= minPriceHousing[typeOfHousing.value] &
 const onPriceChange = () => {
   price.placeholder = minPriceHousing[typeOfHousing.value];
   price.min = minPriceHousing[typeOfHousing.value];
-  pristine.validate(price);
 };
 
 const priceValidatorErrorText = (priceValue) => {
-  if (priceValue < 100000) {
-    return `минимальная цена ${minPriceHousing[typeOfHousing.value]}`;
-  }
-  else {
-    return 'максимальная цена 100000';
-  }
+  return `минимальная цена ${minPriceHousing[typeOfHousing.value]}`;
 };
 
 
@@ -199,10 +194,10 @@ pristine.addValidator(capacity, validateRoomsAndGuests, getRoomsAndGuestsErrorMe
 const createSlider = () => {
   noUiSlider.create(sliderElement, {
     range: {
-      min: Number(price.placeholder),
+      min: Number(price.min),
       max: 100000,
     },
-    start: Number(price.placeholder),
+    start: Number(price.min),
     step: 200,
     connect: 'lower',
     format: {
@@ -215,19 +210,21 @@ const createSlider = () => {
     },
   });
 
-  sliderElement.noUiSlider.on('update', () => {
-    price.value = sliderElement.noUiSlider.get();
-  });
-
   typeOfHousing.addEventListener('change', () => {
     sliderElement.noUiSlider.updateOptions({
       range: {
-        min: Number(price.placeholder),
+        min: Number(price.min),
         max: 100000
       },
-      start: Number(price.placeholder),
+      start: Number(price.min),
     });
   });
+
+  sliderElement.noUiSlider.on('update', () => {
+    price.value = sliderElement.noUiSlider.get();
+  });
 };
+
+createSlider();
 
 export { activatorFormAndFilters, inactiveFormAndFilters, inactivatorFilters, createSlider, setUserFormSubmit };

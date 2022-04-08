@@ -10,13 +10,13 @@ const StartCoordinates = {
   LNG: 139.69211
 };
 
-const createMap = (dataAds) => {
-  const map = L.map('map-canvas')
-    .setView({
-      lat: StartCoordinates.LAT,
-      lng: StartCoordinates.LNG,
-    }, 15);
+const map = L.map('map-canvas')
+  .setView({
+    lat: StartCoordinates.LAT,
+    lng: StartCoordinates.LNG,
+  }, 15);
 
+const createMap = () => {
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -50,6 +50,15 @@ const createMap = (dataAds) => {
     address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
   });
 
+  resetFormButton.addEventListener('click', () => {
+    mainPinMarker.setLatLng(Startlatlng);
+    markerGroup.eachLayer((layer) => {
+      layer.closePopup();
+    });
+  });
+};
+
+const createLabelOnMap = (dataAds) => {
   const icon = L.icon({
     iconUrl: '../img/pin.svg',
     iconSize: [40, 40],
@@ -58,9 +67,8 @@ const createMap = (dataAds) => {
 
   const markerGroup = L.layerGroup().addTo(map);
 
-
-  const addingRegularAd = (similarAd) => {
-    const { location } = similarAd;
+  const addingRegularAd = (dataAd) => {
+    const { location } = dataAd;
     const lat = location.lat;
     const lng = location.lng;
     const marker = L.marker(
@@ -75,7 +83,7 @@ const createMap = (dataAds) => {
 
     marker
       .addTo(markerGroup)
-      .bindPopup(generateCard(similarAd, cardTemplate));
+      .bindPopup(generateCard(dataAd, cardTemplate));
   };
 
   if (dataAds !== undefined) {
@@ -83,13 +91,6 @@ const createMap = (dataAds) => {
       addingRegularAd(dataAd);
     });
   }
+}
 
-  resetFormButton.addEventListener('click', () => {
-    mainPinMarker.setLatLng(Startlatlng);
-    markerGroup.eachLayer((layer) => {
-      layer.closePopup();
-    });
-  });
-};
-
-export { createMap };
+export { createMap, createLabelOnMap };
