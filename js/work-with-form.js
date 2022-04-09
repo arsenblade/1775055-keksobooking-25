@@ -74,10 +74,7 @@ const onPriceChange = () => {
   price.min = minPriceHousing[typeOfHousing.value];
 };
 
-const priceValidatorErrorText = (priceValue) => {
-  return `минимальная цена ${minPriceHousing[typeOfHousing.value]}`;
-};
-
+const priceValidatorErrorText = () => `минимальная цена ${minPriceHousing[typeOfHousing.value]}`;
 
 const validateRoomsAndGuests = () => numberOfRoomsAndGuests[roomNumber.value].includes(capacity.value);
 

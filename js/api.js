@@ -4,7 +4,7 @@ const ServerAddress = {
 };
 
 
-const getData = (createMap, createLabelOnMap, onFail, inactivatorFilters) => {
+const getData = ( onSuccess, onFail, inactivatorFilters) => {
   fetch(ServerAddress.RECEIVING_ADDRESS)
     .then((response) => {
       if (response.ok) {
@@ -13,13 +13,12 @@ const getData = (createMap, createLabelOnMap, onFail, inactivatorFilters) => {
       throw new Error('Не удалось загрузить данные');
     })
     .then((ads) => {
-      createMap();
-      createLabelOnMap(ads)
+      onSuccess(ads);
     })
     .catch((err) => {
-      onFail('Не удалось загрузить данные. Перезгрузите страницу!');
-      createMap();
+      onFail('Не удалось загрузить данные. Перезагрузите страницу!');
       inactivatorFilters();
+      throw new Error(err);
     });
 };
 
@@ -40,6 +39,7 @@ const sendData = (onSuccess, onFail, body) => {
     })
     .catch((err) => {
       onFail();
+      throw new Error(err);
     });
 };
 

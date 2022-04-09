@@ -1,4 +1,7 @@
 import { generateCard } from './generate-one-card.js';
+import { inactivatorFilters } from './work-with-form.js';
+import { showAlert } from './util.js';
+import { getData } from './api.js';
 
 const address = document.querySelector('#address');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
@@ -17,13 +20,49 @@ const map = L.map('map-canvas')
   }, 15);
 
 const createMap = () => {
+  const icon = L.icon({
+    iconUrl: '../img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const markerGroup = L.layerGroup().addTo(map);
+
+  const createLabelOnMap = (dataAds) => {
+    const addingRegularAd = (dataAd) => {
+      const { location } = dataAd;
+      const lat = location.lat;
+      const lng = location.lng;
+      const marker = L.marker(
+        {
+          lat,
+          lng
+        },
+        {
+          icon,
+        },
+      );
+
+      marker
+        .addTo(markerGroup)
+        .bindPopup(generateCard(dataAd, cardTemplate));
+    };
+
+    if (dataAds) {
+      dataAds.forEach((dataAd) => {
+        addingRegularAd(dataAd);
+      });
+    }
+  };
+
+  map.on('load', getData((data) => createLabelOnMap(data), (message) => showAlert(message), () => inactivatorFilters() ));
+
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
-
   address.value = `${StartCoordinates.LAT}, ${StartCoordinates.LNG}`;
   const Startlatlng = L.latLng(StartCoordinates.LAT, StartCoordinates.LNG);
 
@@ -58,39 +97,4 @@ const createMap = () => {
   });
 };
 
-const createLabelOnMap = (dataAds) => {
-  const icon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-
-  const markerGroup = L.layerGroup().addTo(map);
-
-  const addingRegularAd = (dataAd) => {
-    const { location } = dataAd;
-    const lat = location.lat;
-    const lng = location.lng;
-    const marker = L.marker(
-      {
-        lat,
-        lng
-      },
-      {
-        icon,
-      },
-    );
-
-    marker
-      .addTo(markerGroup)
-      .bindPopup(generateCard(dataAd, cardTemplate));
-  };
-
-  if (dataAds !== undefined) {
-    dataAds.forEach((dataAd) => {
-      addingRegularAd(dataAd);
-    });
-  }
-}
-
-export { createMap, createLabelOnMap };
+export { createMap };
