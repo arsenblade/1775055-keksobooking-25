@@ -1,3 +1,4 @@
+import { sendData } from './api.js';
 const form = document.querySelector('.ad-form');
 const filters = document.querySelector('.map__filters');
 
@@ -39,11 +40,26 @@ const timeout = form.querySelector('#timeout');
 
 const sliderElement = document.querySelector('.ad-form__slider');
 
+const submitButton = document.querySelector('.ad-form__submit');
+
+const mapFilter = document.querySelector('.map__filters');
+
+const successfulFormSubm = document.querySelector('#success').content.querySelector('.success');
+
+const errorfulFormSubm = document.querySelector('#error').content.querySelector('.error');
+
+const htmlBody = document.querySelector('body');
+
 price.placeholder = minPriceHousing[typeOfHousing.value];
+price.min = minPriceHousing[typeOfHousing.value];
 
 const activatorFormAndFilters = () => {
   form.classList.remove('ad-form--disabled');
   filters.classList.remove('map__filters--disabled');
+};
+
+const inactivatorFilters = () => {
+  filters.classList.add('map__filters--disabled');
 };
 
 const inactiveFormAndFilters = () => {
@@ -51,16 +67,14 @@ const inactiveFormAndFilters = () => {
   filters.classList.add('map__filters--disabled');
 };
 
-const validatePrice = (value) => value > minPriceHousing[typeOfHousing.value];
+const validatePrice = (value) => value >= minPriceHousing[typeOfHousing.value] && value <= 100000;
 
 const onPriceChange = () => {
   price.placeholder = minPriceHousing[typeOfHousing.value];
   price.min = minPriceHousing[typeOfHousing.value];
-  pristine.validate(price);
 };
 
 const priceValidatorErrorText = () => `минимальная цена ${minPriceHousing[typeOfHousing.value]}`;
-
 
 const validateRoomsAndGuests = () => numberOfRoomsAndGuests[roomNumber.value].includes(capacity.value);
 
@@ -78,6 +92,84 @@ const getRoomsAndGuestsErrorMessage = () => {
   return '100 комнат — «не для гостей»';
 };
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+};
+
+const creatorSuccessFormSubm = () => {
+  const cloneFormSub = successfulFormSubm.cloneNode(true);
+  htmlBody.append(cloneFormSub);
+
+  cloneFormSub.addEventListener('click', () => {
+    cloneFormSub.remove();
+  });
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      cloneFormSub.remove();
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
+  document.addEventListener('keydown', onEscKeyDown);
+};
+
+
+const creatorErrorFormSubm = () => {
+  const cloneFormSub = errorfulFormSubm.cloneNode(true);
+  const errorfulFormButton = cloneFormSub.querySelector('.error__button');
+  htmlBody.append(cloneFormSub);
+
+  errorfulFormButton.addEventListener('click', () => {
+    cloneFormSub.remove();
+  });
+
+  cloneFormSub.addEventListener('click', () => {
+    cloneFormSub.remove();
+  });
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      cloneFormSub.remove();
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
+  document.addEventListener('keydown', onEscKeyDown);
+};
+
+const setUserFormSubmit = () => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          unblockSubmitButton();
+          creatorSuccessFormSubm();
+          evt.target.reset();
+        },
+        () => {
+          unblockSubmitButton();
+          creatorErrorFormSubm();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+form.addEventListener('reset', () => {
+  mapFilter.reset();
+});
+
+
 typeOfHousing.addEventListener('change', onPriceChange);
 
 timein.addEventListener('change', () => {
@@ -86,11 +178,6 @@ timein.addEventListener('change', () => {
 
 timeout.addEventListener('change', () => {
   timein.value = timeout.value;
-});
-
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
 });
 
 pristine.addValidator(
@@ -104,10 +191,10 @@ pristine.addValidator(capacity, validateRoomsAndGuests, getRoomsAndGuestsErrorMe
 const createSlider = () => {
   noUiSlider.create(sliderElement, {
     range: {
-      min: Number(price.placeholder),
+      min: Number(price.min),
       max: 100000,
     },
-    start: Number(price.placeholder),
+    start: Number(price.min),
     step: 200,
     connect: 'lower',
     format: {
@@ -120,19 +207,21 @@ const createSlider = () => {
     },
   });
 
+  typeOfHousing.addEventListener('change', () => {
+    sliderElement.noUiSlider.updateOptions({
+      range: {
+        min: Number(price.min),
+        max: 100000
+      },
+      start: Number(price.min),
+    });
+  });
+
   sliderElement.noUiSlider.on('update', () => {
     price.value = sliderElement.noUiSlider.get();
   });
-
-  typeOfHousing.addEventListener('change',()=> {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: Number(price.placeholder),
-        max: 100000
-      },
-      start: Number(price.placeholder),
-    });
-  });
 };
 
-export { activatorFormAndFilters, inactiveFormAndFilters, createSlider };
+createSlider();
+
+export { activatorFormAndFilters, inactiveFormAndFilters, inactivatorFilters, createSlider, setUserFormSubmit };

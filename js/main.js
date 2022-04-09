@@ -1,6 +1,5 @@
-import {activatorFormAndFilters, inactiveFormAndFilters , createSlider } from './work-with-form.js';
-import {createMap} from './map.js';
-inactiveFormAndFilters();
+import { createMap } from './map.js';
+import { setUserFormSubmit } from './work-with-form.js';
 createMap();
-activatorFormAndFilters();
-createSlider();
+setUserFormSubmit();
+
