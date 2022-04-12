@@ -2,6 +2,9 @@ import { sendData } from './api.js';
 const form = document.querySelector('.ad-form');
 const filters = document.querySelector('.map__filters');
 
+const previewAvatar = document.querySelector('.ad-form-header__preview img');
+const previewImg = document.querySelector('.ad-form__photo');
+
 const minPriceHousing = {
   'bungalow': 0,
   'flat': 1000,
@@ -167,8 +170,12 @@ const setUserFormSubmit = () => {
 
 form.addEventListener('reset', () => {
   mapFilter.reset();
+  sliderElement.noUiSlider.updateOptions({
+    start: Number(price.min)
+  });
+  previewImg.innerHTML = '';
+  previewAvatar.src = 'img/muffin-grey.svg';
 });
-
 
 typeOfHousing.addEventListener('change', onPriceChange);
 
