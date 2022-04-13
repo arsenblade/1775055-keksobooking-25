@@ -1,6 +1,6 @@
 import { createMap } from './map.js';
-import { loaderPhoto } from './avatar.js';
+import { createLoaderPhoto } from './avatar.js';
 import { setUserFormSubmit } from './work-with-form.js';
 createMap();
 setUserFormSubmit();
-loaderPhoto();
+createLoaderPhoto();

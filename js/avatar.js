@@ -1,4 +1,4 @@
-const loaderPhoto = () => {
+const createLoaderPhoto = () => {
   const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   const fileChooserAvatar = document.querySelector('#avatar');
@@ -42,4 +42,4 @@ const loaderPhoto = () => {
   });
 };
 
-export { loaderPhoto };
+export { createLoaderPhoto };
