@@ -4,6 +4,8 @@ import { showAlert, debounce } from './util.js';
 import { getData } from './api.js';
 import { filter } from './filter.js';
 
+const MAP_ZOOM = 12;
+
 const address = document.querySelector('#address');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
@@ -24,7 +26,7 @@ const createMap = () => {
     .setView({
       lat: StartCoordinates.LAT,
       lng: StartCoordinates.LNG,
-    }, 15);
+    }, MAP_ZOOM);
 
   const icon = L.icon({
     iconUrl: '../img/pin.svg',

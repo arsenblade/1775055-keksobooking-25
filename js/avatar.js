@@ -5,6 +5,7 @@ const loaderPhoto = () => {
   const fileChooserImg = document.querySelector('#images');
   const previewAvatar = document.querySelector('.ad-form-header__preview img');
   const previewImg = document.querySelector('.ad-form__photo');
+  const parentContainer = document.querySelector('.ad-form__photo-container');
 
   fileChooserAvatar.addEventListener('change', () => {
     const file = fileChooserAvatar.files[0];
@@ -24,14 +25,19 @@ const loaderPhoto = () => {
 
     const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
-    if (matches && previewImg.children.length < 3) {
+    if (matches) {
+      if(previewImg){
+        previewImg.remove();
+      }
+      const imgContainer = document.createElement('div');
       const img = document.createElement('img');
-
+      imgContainer.classList.add('ad-form__photo');
       img.src = URL.createObjectURL(file);
       img.width = 70;
       img.height = 70;
       img.alt = 'Фото жилья';
-      previewImg.append(img);
+      imgContainer.append(img);
+      parentContainer.append(imgContainer);
     }
   });
 };
