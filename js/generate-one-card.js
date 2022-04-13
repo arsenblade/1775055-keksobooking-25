@@ -57,7 +57,9 @@ const generateCard = (dataCard, cardTemplateOriginal) => {
   }
 
   const description = cardTemplateInner.querySelector('.popup__description');
-  description.innerText = offer.description;
+  if(offer.description) {
+    description.innerText = offer.description;
+  }
 
   const photo = cardTemplateInner.querySelector('.popup__photo');
   generatePhotos(offer.photos, photo);
