@@ -1,22 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-const getRandomNumber = (firstNumber, secondNumber) => {
-  const maxNumber = Math.max(firstNumber, secondNumber);
-  const minNumber = Math.min(firstNumber, secondNumber);
-  return Math.floor(minNumber + Math.random() * (maxNumber - minNumber + 1));
-};
-
-const getRandomNumberFloat = (firstNumber, secondNumber, count) => {
-  const maxNumber = Math.max(firstNumber, secondNumber);
-  const minNumber = Math.min(firstNumber, secondNumber);
-  return Math.floor((minNumber + Math.random() * (maxNumber - minNumber)) * Math.pow(10, count)) / Math.pow(10, count);
-};
-
-const getFormatNumber = () => {
-  const randomN = getRandomNumber(1, 10);
-  return `0${randomN}`.slice(-2);
-};
-
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
@@ -38,7 +21,7 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-function debounce (callback, timeoutDelay = 500) {
+function debounce(callback, timeoutDelay = 500) {
   let timeoutId;
 
   return (...rest) => {
@@ -47,4 +30,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export { getRandomNumber, getRandomNumberFloat, getFormatNumber, showAlert, debounce};
+export { showAlert, debounce };
